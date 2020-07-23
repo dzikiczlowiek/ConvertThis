@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UserSecretsId>227592fa-6456-4779-8934-040720951b60</UserSecretsId>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.9" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ConvertThis.Infrastructure.Services\ConvertThis.Infrastructure.Services.csproj" />
+    <ProjectReference Include="..\ConvertThis.Infrastructure\ConvertThis.Infrastructure.csproj" />
+  </ItemGroup>
+
+
+</Project>

@@ -1,0 +1,49 @@
+using ConvertThis.Infrastructure;
+using ConvertThis.Infrastructure.Services;
+using ConvertThis.Infrastructure.Services.Converters;
+using ConvertThis.WebApi.Infrastructure;
+
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+
+namespace ConvertThis.WebApi
+{
+    public class Startup
+    {
+        public Startup(IConfiguration configuration)
+        {
+            Configuration = configuration;
+        }
+
+        public IConfiguration Configuration { get; }
+
+        public void ConfigureServices(IServiceCollection services)
+        {
+            services.AddControllers();
+            services.AddScoped<IConverterFactory, ConverterFactory>();
+            services.AddScoped<Base64Converter>().AddScoped<IConverter, Base64Converter>(s => s.GetService<Base64Converter>());
+            services.AddScoped<Base32Converter>().AddScoped<IConverter, Base32Converter>(s => s.GetService<Base32Converter>());
+            services.AddScoped<IInputToByteArrayConverter, InputToByteArrayConverter>();
+            services.AddTransient<IConverterSelector, Base32ConverterSelector>();
+            services.AddTransient<IConverterSelector, Base64ConverterSelector>();
+        }
+
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        {
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+            }
+
+            app.UseHttpsRedirection();
+            app.UseRouting();
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+            });
+        }
+    }
+}
