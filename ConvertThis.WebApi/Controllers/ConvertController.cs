@@ -1,12 +1,10 @@
-﻿using System;
-using System.Threading.Tasks;
-
-using ConvertThis.Infrastructure;
+﻿using ConvertThis.Infrastructure;
 
 using Microsoft.AspNetCore.Mvc;
 
 namespace ConvertThis.WebApi.Controllers
 {
+    [ResponseCache(VaryByHeader = "User-Agent", Duration = 30)]
     [Route("api/[controller]")]
     [ApiController]
     public class ConvertController : ControllerBase

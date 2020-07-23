@@ -1,15 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 using ConvertThis.WebApi.Infrastructure;
 
-using Microsoft.Extensions.DependencyInjection;
-
 namespace ConvertThis.Infrastructure.Services
 {
-    public class ConverterFactory : IConverterFactory, IDisposable
+    public sealed class ConverterFactory : IConverterFactory
     {
         private readonly IServiceProvider _serviceScope;
         private readonly IEnumerable<IConverterSelector> _converterSelectors;
@@ -39,12 +36,7 @@ namespace ConvertThis.Infrastructure.Services
             }
         }
 
-        public void Dispose()
-        {
-            // TODO;
-        }
-
-        internal sealed class NullConverter : IConverter
+        private sealed class NullConverter : IConverter
         {
             private readonly string _converterName;
 
@@ -57,15 +49,6 @@ namespace ConvertThis.Infrastructure.Services
             {
                 return $"Missing {_converterName} converter.";
             }
-        }
-    }
-
-
-    public sealed class InputToByteArrayConverter : IInputToByteArrayConverter
-    {
-        public byte[] Convert(string input)
-        {
-            return UTF8Encoding.UTF8.GetBytes(input);
         }
     }
 }

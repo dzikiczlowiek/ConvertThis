@@ -4,4 +4,12 @@
     {
         string Convert(byte[] input);
     }
+
+    public abstract class ConverterBase : IConverter
+    {
+        public string Convert(byte[] input)
+        {
+            throw new System.NotImplementedException();
+        }
+    }
 }
