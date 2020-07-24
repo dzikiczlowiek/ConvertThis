@@ -1,4 +1,5 @@
 ﻿using ConvertThis.Infrastructure;
+using ConvertThis.WebApi.Models;
 
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,18 +19,39 @@ namespace ConvertThis.WebApi.Controllers
             _converterFactory = converterFactory;
         }
 
-        [HttpGet("{input}/To/{convertType}")]
-        public IActionResult ConvertTo(string convertType, string input)
+        [HttpGet("{input}/to/{converterType}")]
+        public IActionResult ConvertTo([FromRoute]ConvertInputRequestModel request)
         {
-            var converter = _converterFactory.Create(convertType);
-            if(converter == null)
+            var converter = _converterFactory.Create(request.ConverterType);
+            if (converter == null)
             {
                 return BadRequest();
             }
 
             try
             {
-                var byteArr = _toByteArrayConverter.Convert(input);
+                var byteArr = _toByteArrayConverter.Convert(request.Input);
+                var result = converter.Convert(byteArr);
+                return Ok(result);
+            }
+            finally
+            {
+                _converterFactory.Release(converter);
+            }
+        }
+
+        [HttpPost("to")]
+        public IActionResult ConvertTo2([FromBody]ConvertInputRequestModel request)
+        {
+            var converter = _converterFactory.Create(request.ConverterType);
+            if (converter == null)
+            {
+                return BadRequest();
+            }
+
+            try
+            {
+                var byteArr = _toByteArrayConverter.Convert(request.Input);
                 var result = converter.Convert(byteArr);
                 return Ok(result);
             }

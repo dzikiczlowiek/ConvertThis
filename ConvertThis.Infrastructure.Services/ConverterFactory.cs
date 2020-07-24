@@ -22,7 +22,7 @@ namespace ConvertThis.Infrastructure.Services
             var selector = _converterSelectors.SingleOrDefault(x => x.IsApplicable(converterType));
             if(selector == null)
             {
-                return new NullConverter(converterType);
+                throw MissingConverterException.Missing(converterType);
             }
 
             return (IConverter)_serviceScope.GetService(selector.ConverterType);
@@ -33,21 +33,6 @@ namespace ConvertThis.Infrastructure.Services
             if(converter is IDisposable)
             {
                 ((IDisposable)converter).Dispose();
-            }
-        }
-
-        private sealed class NullConverter : IConverter
-        {
-            private readonly string _converterName;
-
-            public NullConverter(string converterName)
-            {
-                _converterName = converterName;
-            }
-
-            public string Convert(byte[] input)
-            {
-                return $"Missing {_converterName} converter.";
             }
         }
     }

@@ -1,3 +1,5 @@
+using System.Net.Mime;
+
 using ConvertThis.Infrastructure;
 using ConvertThis.Infrastructure.Services;
 using ConvertThis.Infrastructure.Services.Converters;
@@ -5,6 +7,7 @@ using ConvertThis.WebApi.Infrastructure;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -22,7 +25,20 @@ namespace ConvertThis.WebApi
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            services.AddControllers()
+                 .ConfigureApiBehaviorOptions(options =>
+                 {
+                     options.InvalidModelStateResponseFactory = context =>
+                     {
+                         var result = new BadRequestObjectResult(context.ModelState);
+                                                  // TODO: add `using System.Net.Mime;` to resolve MediaTypeNames
+                         result.ContentTypes.Add(MediaTypeNames.Application.Json);
+                         result.ContentTypes.Add(MediaTypeNames.Application.Xml);
+
+                         return result;
+                     };
+                 });
+
             services.AddScoped<IConverterFactory, ConverterFactory>();
             services.AddScoped<Base64Converter>().AddScoped<IConverter, Base64Converter>(s => s.GetService<Base64Converter>());
             services.AddScoped<Base32Converter>().AddScoped<IConverter, Base32Converter>(s => s.GetService<Base32Converter>());
