@@ -34,7 +34,7 @@ namespace ConvertThis.WebApi.Controllers
             {
                 var byteArr = _toByteArrayConverter.Convert(request.Input);
                 var result = converter.Convert(byteArr);
-                return Ok({result});
+                return Ok(result);
             }
             finally
             {
