@@ -13,6 +13,18 @@ jobs:
 
     steps:
     - uses: actions/checkout@main
+    - name: Declare some vars to use on other actions
+      id: vars
+      shell: bash
+      run: |
+        echo "GITHUB_SHA: ${GITHUB_SHA}"
+        echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
+        echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
+    - name: Write Version to File
+      uses: brettdorrans/write-version-to-file@v1.0.0
+      with:
+        # The filename to write the version tag to
+        filename: /meta/.gitinfo.txt      
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v1
       with:
