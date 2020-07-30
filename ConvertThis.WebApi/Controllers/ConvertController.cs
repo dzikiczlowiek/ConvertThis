@@ -3,6 +3,7 @@
 using ConvertThis.Infrastructure;
 using ConvertThis.WebApi.Models;
 
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ConvertThis.WebApi.Controllers
@@ -10,6 +11,7 @@ namespace ConvertThis.WebApi.Controllers
     [ResponseCache(VaryByHeader = "User-Agent", Duration = 30)]
     [Route("api/[controller]")]
     [ApiController]
+    [EnableCors]
     public class ConvertController : ControllerBase
     {
         private readonly IInputToByteArrayConverter _toByteArrayConverter;
