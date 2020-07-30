@@ -19,11 +19,11 @@ jobs:
       run: |
         echo "GITHUB_SHA: ${GITHUB_SHA}"
         echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
-        echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
+        echo "::set-output name=sha::${GITHUB_SHA}"
     - name: Write Version to File
       shell: bash
       run: | 
-        echo test > ConvertThis.WebApi/meta/_gitinfo.txt      
+        echo ${{ steps.vars.outputs.sha }} > ConvertThis.WebApi/meta/_gitinfo.txt      
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v1
       with:
