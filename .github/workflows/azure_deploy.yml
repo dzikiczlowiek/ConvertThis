@@ -23,7 +23,7 @@ jobs:
     - name: Write Version to File
       shell: bash
       run: | 
-        test > ConvertThis.WebApi/meta/.gitinfo.txt      
+        echo test > ConvertThis.WebApi/meta/.gitinfo.txt      
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v1
       with:
