@@ -21,10 +21,8 @@ jobs:
         echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
         echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
     - name: Write Version to File
-      uses: brettdorrans/write-version-to-file@v1.0.0
-      with:
-        # The filename to write the version tag to
-        filename: ConvertThis.WebApi/meta/.gitinfo.txt      
+      shell: bash
+      run:  test > ConvertThis.WebApi/meta/.gitinfo.txt      
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v1
       with:
