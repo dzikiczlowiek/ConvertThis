@@ -22,7 +22,8 @@ jobs:
         echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
     - name: Write Version to File
       shell: bash
-      run:  test > ConvertThis.WebApi/meta/.gitinfo.txt      
+      run: | 
+        test > ConvertThis.WebApi/meta/.gitinfo.txt      
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v1
       with:
