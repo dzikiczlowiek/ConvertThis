@@ -1,0 +1,38 @@
+name: Firebase WebAssembly Deploy
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Declare some vars to use on other actions
+      id: vars
+      shell: bash
+      run: |
+        echo "GITHUB_SHA: ${GITHUB_SHA}"
+        echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
+        echo "::set-output name=sha::${GITHUB_SHA}"
+    - name: Write Version to File
+      shell: bash
+      run: | 
+        echo ${{ steps.vars.outputs.sha }} > ConvertThis.WebAssembly/meta/_gitinfo.txt      
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 3.1.301
+    - name: Install dependencies
+      run: dotnet restore
+    - name: Build
+      run: dotnet build ConvertThis.WebAssembly/ConvertThis.WebAssembly.csproj --configuration Release --no-restore
+    - name: Test
+      run: dotnet test --no-restore --verbosity normal
+    - name: dotnet publish
+      run: dotnet publish ConvertThis.WebAssembly/ConvertThis.WebAssembly.csproj -c Release -o ${{env.DOTNET_ROOT}}/webassembly
