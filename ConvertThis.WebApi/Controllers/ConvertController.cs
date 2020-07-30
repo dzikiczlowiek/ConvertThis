@@ -72,7 +72,7 @@ namespace ConvertThis.WebApi.Controllers
         public IActionResult Info()
         {
             using Stream stream = this.GetType().Assembly.
-                   GetManifestResourceStream("ConvertThis.WebApi.meta._gitinfo.txt");
+                GetManifestResourceStream("ConvertThis.WebApi.meta._gitinfo.txt");
             using StreamReader sr = new StreamReader(stream);
 
             return Ok(sr.ReadToEnd());
