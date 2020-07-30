@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 
 using ConvertThis.Infrastructure;
 using ConvertThis.WebApi.Models;
@@ -44,8 +45,10 @@ namespace ConvertThis.WebApi.Controllers
             }
         }
 
+
+
         [HttpPost("to")]
-        public IActionResult ConvertTo2([FromBody]ConvertInputRequestModel request)
+        public IActionResult ConvertTo2([FromBody] ConvertInputRequestModel request)
         {
             var converter = _converterFactory.Create(request.ConverterType);
             if (converter == null)
@@ -63,6 +66,16 @@ namespace ConvertThis.WebApi.Controllers
             {
                 _converterFactory.Release(converter);
             }
+        }
+
+        [HttpGet("Info")]
+        public IActionResult Info()
+        {
+            using Stream stream = this.GetType().Assembly.
+                   GetManifestResourceStream("ConvertThis.WebApi.meta._gitinfo.txt");
+            using StreamReader sr = new StreamReader(stream);
+
+            return Ok(sr.ReadToEnd());
         }
     }
 }
