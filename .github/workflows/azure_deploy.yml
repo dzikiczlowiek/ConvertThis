@@ -20,11 +20,11 @@ jobs:
     - name: Install dependencies
       run: dotnet restore
     - name: Build
-      run: dotnet build --configuration Release --no-restore
+      run: dotnet build ConvertThis.WebApi/ConvertThis.WebApi.csproj --configuration Release --no-restore
     - name: Test
       run: dotnet test --no-restore --verbosity normal
     - name: dotnet publish
-      run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp
+      run: dotnet publish ConvertThis.WebApi/ConvertThis.WebApi.csproj -c Release -o ${{env.DOTNET_ROOT}}/myapp
       
     - name: Deploy to Azure Web App
       uses: azure/webapps-deploy@v1
