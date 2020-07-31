@@ -40,6 +40,14 @@ jobs:
       shell: bash
       run: | 
         echo ${{ secrets.FIREBASE_JSON }} > ${{env.DOTNET_ROOT}}/webassembly/firebase.json
+    - name: Create .firebaserc
+      shell: bash
+      run: | 
+        echo ${{ secrets._firebaserc }} > ${{env.DOTNET_ROOT}}/webassembly/.firebaserc
+    - name: list files
+      shell: bash
+      run: | 
+        echo ls ${{env.DOTNET_ROOT}}/webassembly
     - name: Deploy to Firebase
       uses: w9jds/firebase-action@v1.5.0
       with:
