@@ -8,9 +8,7 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v2
     - name: Declare some vars to use on other actions
@@ -48,6 +46,12 @@ jobs:
       shell: bash
       run: | 
         ls ${{env.DOTNET_ROOT}}/webassembly
+  deploy:
+    name: Deploy
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
     - name: Deploy to Firebase
       uses: w9jds/firebase-action@v1.5.0
       with:
