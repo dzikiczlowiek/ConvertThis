@@ -36,3 +36,13 @@ jobs:
       run: dotnet test --no-restore --verbosity normal
     - name: dotnet publish
       run: dotnet publish ConvertThis.WebAssembly/ConvertThis.WebAssembly.csproj -c Release -o ${{env.DOTNET_ROOT}}/webassembly --no-build
+    - name: Create Firebase.json
+      shell: bash
+      run: | 
+        echo ${{ secrets.FIREBASE_JSON }} > ${{env.DOTNET_ROOT}}/webassembly/firebase.json
+    - name: Deploy to Firebase
+      uses: w9jds/firebase-action@v1.5.0
+      with:
+          args: deploy --only hosting
+      env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
