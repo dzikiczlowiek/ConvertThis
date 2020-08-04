@@ -3,8 +3,13 @@ name: Firebase WebAssembly Deploy
 on:
   push:
     branches: [ main ]
+    paths: 
+      - 'ConvertThis.WebAssembly/**'
+    
   pull_request:
     branches: [ main ]
+    paths: 
+      - 'ConvertThis.WebAssembly/**'
 
 jobs:
   build:
