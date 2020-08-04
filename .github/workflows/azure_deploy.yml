@@ -3,8 +3,12 @@ name: Azure WebApi Deploy
 on:
   push:
     branches: [ main ]
+    paths-ignore: 
+    - 'ConvertThis.WebAssembly/**'
   pull_request:
     branches: [ main ]
+    paths-ignore: 
+    - '/ConvertThis.WebAssembly/**'
 
 jobs:
   build:
