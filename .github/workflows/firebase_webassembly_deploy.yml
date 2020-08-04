@@ -71,6 +71,10 @@ jobs:
       shell: bash
       run: | 
         ls 
+    - name: list files x2
+      shell: bash
+      run: | 
+        ls build
     - name: Deploy to Firebase
       uses: w9jds/firebase-action@v1.5.0
       with:
