@@ -3,8 +3,8 @@ name: Firebase WebAssembly Deploy
 on:
   push:
     branches: [ main ]
-    paths: 
-      - 'ConvertThis.WebAssembly/**'
+#    paths: 
+#      - 'ConvertThis.WebAssembly/**'
     
   pull_request:
     branches: [ main ]
@@ -50,7 +50,7 @@ jobs:
     - name: list files
       shell: bash
       run: | 
-        ls ${{env.DOTNET_ROOT}}/webassembly
+        ls -a ${{env.DOTNET_ROOT}}/webassembly
     - name: Archive Production Artifact
       uses: actions/upload-artifact@master
       with:
@@ -70,11 +70,11 @@ jobs:
     - name: list files
       shell: bash
       run: | 
-        ls 
+        ls -a
     - name: list files x2
       shell: bash
       run: | 
-        ls build
+        ls -a build
     - name: Deploy to Firebase
       uses: w9jds/firebase-action@v1.5.0
       with:
