@@ -39,14 +39,6 @@ jobs:
       run: dotnet test --no-restore --verbosity normal
     - name: dotnet publish
       run: dotnet publish ConvertThis.WebAssembly/ConvertThis.WebAssembly.csproj -c Release -o ${{env.DOTNET_ROOT}}/webassembly --no-build
-    - name: Create Firebase.json
-      shell: bash
-      run: | 
-        echo ${{ secrets.FIREBASE_JSON }} > ${{env.DOTNET_ROOT}}/webassembly/firebase.json
-    - name: Create .firebaserc
-      shell: bash
-      run: | 
-        echo ${{ secrets._firebaserc }} > ${{env.DOTNET_ROOT}}/webassembly/.firebaserc
     - name: list files
       shell: bash
       run: | 
@@ -66,7 +58,15 @@ jobs:
       uses: actions/download-artifact@master
       with:
         name: webassembly
-
+        path: webassembly
+    - name: Create Firebase.json
+      shell: bash
+      run: | 
+        echo ${{ secrets.FIREBASE_JSON }} > firebase.json
+    - name: Create .firebaserc
+      shell: bash
+      run: | 
+        echo ${{ secrets._firebaserc }} > .firebaserc
     - name: list files
       shell: bash
       run: | 
