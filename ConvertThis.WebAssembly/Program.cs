@@ -19,7 +19,6 @@ namespace ConvertThis.WebAssembly
 
             builder.Services.AddTransient(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
             builder.Services.AddCors();
-            
             await builder.Build().RunAsync();
         }
     }
