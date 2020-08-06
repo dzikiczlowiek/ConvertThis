@@ -66,14 +66,11 @@ jobs:
       uses: actions/download-artifact@master
       with:
         name: webassembly
+        path: webassemply
     - name: list files
       shell: bash
       run: | 
         ls -a
-    - name: list files x2
-      shell: bash
-      run: | 
-        ls -a build
     - name: Deploy to Firebase
       uses: w9jds/firebase-action@v1.5.0
       with:
