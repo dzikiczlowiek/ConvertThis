@@ -46,8 +46,9 @@ else
     private string convertResult;
     protected override async Task OnInitializedAsync()
     {
-        
-        convertResult = await Http.GetStringAsync("https://localhost:44344/api/convert/test/to/base32");
+
+        var url = "https://convertthis-webapi.azurewebsites.net/api/convert/raka_maka_fon/to/base32";
+        convertResult = await Http.GetStringAsync(url);
         forecasts = await Http.GetFromJsonAsync<WeatherForecast[]>("sample-data/weather.json");
     }
 
