@@ -4,11 +4,11 @@ on:
   push:
     branches: [ main ]
     paths: 
-    - 'WebApi/**'
+    - 'source/WebApi/**'
   pull_request:
     branches: [ main ]
     paths: 
-    - 'WebApi/**'
+    - 'source/WebApi/**'
 
 jobs:
   build:
@@ -27,7 +27,7 @@ jobs:
     - name: Write Version to File
       shell: bash
       run: | 
-        echo ${{ steps.vars.outputs.sha }} > WebApi/ConvertThis.WebApi/meta/_gitinfo.txt      
+        echo ${{ steps.vars.outputs.sha }} > source/WebApi/ConvertThis.WebApi/meta/_gitinfo.txt      
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v1
       with:
@@ -35,11 +35,11 @@ jobs:
     - name: Install dependencies
       run: dotnet restore
     - name: Build
-      run: dotnet build WebApi/ConvertThis.WebApi/ConvertThis.WebApi.csproj --configuration Release --no-restore
+      run: dotnet build source/WebApi/ConvertThis.WebApi/ConvertThis.WebApi.csproj --configuration Release --no-restore
     - name: Test
       run: dotnet test --no-restore --verbosity normal
     - name: dotnet publish
-      run: dotnet publish WebApi/ConvertThis.WebApi/ConvertThis.WebApi.csproj -c Release -o ${{env.DOTNET_ROOT}}/webapi
+      run: dotnet publish source/WebApi/ConvertThis.WebApi/ConvertThis.WebApi.csproj -c Release -o ${{env.DOTNET_ROOT}}/webapi
       
     - name: Deploy to Azure Web App
       uses: azure/webapps-deploy@v1
