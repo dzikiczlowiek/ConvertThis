@@ -35,7 +35,7 @@ jobs:
       with:
         dotnet-version: 3.1.301
     - name: Install dependencies
-      run: dotnet restore
+      run: dotnet restore source/WebApi/ConvertThis.WebApi/ConvertThis.WebApi.csproj
     - name: Build
       run: dotnet build source/WebApi/ConvertThis.WebApi/ConvertThis.WebApi.csproj --configuration Release --no-restore
     - name: Test

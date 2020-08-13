@@ -34,7 +34,7 @@ jobs:
       with:
         dotnet-version: 3.1.301
     - name: Install dependencies
-      run: dotnet restore
+      run: dotnet restore  source/UI/ConvertThis.WebAssembly/ConvertThis.WebAssembly.csproj
     - name: Build
       run: dotnet build source/UI/ConvertThis.WebAssembly/ConvertThis.WebAssembly.csproj --configuration Release --no-restore
     - name: Test
