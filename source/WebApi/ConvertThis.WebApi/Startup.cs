@@ -57,7 +57,7 @@ namespace ConvertThis.WebApi
             app.UseHttpsRedirection();
             app.UseRouting();
             app.UseCors(policy =>
-                policy.WithOrigins("http://localhost:44332", "https://localhost:44332")
+                policy.WithOrigins("http://localhost:44332", "https://localhost:44332", "https://convert-this.web.app")
                 .AllowAnyMethod()
                 .AllowAnyHeader());
 
