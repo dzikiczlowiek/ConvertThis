@@ -5,10 +5,12 @@ on:
     branches: [ main ]
     paths: 
     - 'source/WebApi/**'
+    - '.github/workflows/azure_deploy.yml'
   pull_request:
     branches: [ main ]
     paths: 
     - 'source/WebApi/**'
+    - '.github/workflows/azure_deploy.yml'
 
 jobs:
   build:

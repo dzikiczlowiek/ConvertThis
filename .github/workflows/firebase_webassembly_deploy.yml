@@ -5,11 +5,13 @@ on:
     branches: [ main ]
     paths: 
       - 'source/UI/ConvertThis.WebAssembly/**'
+      - '.github/workflows/firebase_webassembly_deploy.yml'
     
   pull_request:
     branches: [ main ]
     paths: 
       - 'source/UI/ConvertThis.WebAssembly/**'
+      - '.github/workflows/firebase_webassembly_deploy.yml'
 
 jobs:
   build:
