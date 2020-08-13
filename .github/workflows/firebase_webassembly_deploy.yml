@@ -3,13 +3,13 @@ name: Firebase WebAssembly Deploy
 on:
   push:
     branches: [ main ]
-#    paths: 
-#      - 'ConvertThis.WebAssembly/**'
+    paths: 
+      - 'UI/ConvertThis.WebAssembly/**'
     
   pull_request:
     branches: [ main ]
     paths: 
-      - 'ConvertThis.WebAssembly/**'
+      - 'UI/ConvertThis.WebAssembly/**'
 
 jobs:
   build:
@@ -26,7 +26,7 @@ jobs:
     - name: Write Version to File
       shell: bash
       run: | 
-        echo ${{ steps.vars.outputs.sha }} > ConvertThis.WebAssembly/meta/_gitinfo.txt      
+        echo ${{ steps.vars.outputs.sha }} > UI/ConvertThis.WebAssembly/meta/_gitinfo.txt      
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v1
       with:
@@ -34,11 +34,11 @@ jobs:
     - name: Install dependencies
       run: dotnet restore
     - name: Build
-      run: dotnet build ConvertThis.WebAssembly/ConvertThis.WebAssembly.csproj --configuration Release --no-restore
+      run: dotnet build UI/ConvertThis.WebAssembly/ConvertThis.WebAssembly.csproj --configuration Release --no-restore
     - name: Test
       run: dotnet test --no-restore --verbosity normal
     - name: dotnet publish
-      run: dotnet publish ConvertThis.WebAssembly/ConvertThis.WebAssembly.csproj -c Release -o ${{env.DOTNET_ROOT}}/webassembly --no-build
+      run: dotnet publish UI/ConvertThis.WebAssembly/ConvertThis.WebAssembly.csproj -c Release -o ${{env.DOTNET_ROOT}}/webassembly --no-build
     - name: list files
       shell: bash
       run: | 
