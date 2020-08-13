@@ -38,8 +38,8 @@ jobs:
       run: dotnet restore source/WebApi/ConvertThis.WebApi/ConvertThis.WebApi.csproj
     - name: Build
       run: dotnet build source/WebApi/ConvertThis.WebApi/ConvertThis.WebApi.csproj --configuration Release --no-restore
-    - name: Test
-      run: dotnet test --no-restore --verbosity normal
+    # - name: Test
+    #   run: dotnet test --no-restore --verbosity normal
     - name: dotnet publish
       run: dotnet publish source/WebApi/ConvertThis.WebApi/ConvertThis.WebApi.csproj -c Release -o ${{env.DOTNET_ROOT}}/webapi
       
