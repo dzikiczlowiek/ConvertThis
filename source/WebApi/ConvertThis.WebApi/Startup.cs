@@ -31,7 +31,7 @@ namespace ConvertThis.WebApi
                      options.InvalidModelStateResponseFactory = context =>
                      {
                          var result = new BadRequestObjectResult(context.ModelState);
-                                                  // TODO: add `using System.Net.Mime;` to resolve MediaTypeNames
+                         // TODO: add `using System.Net.Mime;` to resolve MediaTypeNames
                          result.ContentTypes.Add(MediaTypeNames.Application.Json);
                          result.ContentTypes.Add(MediaTypeNames.Application.Xml);
 
@@ -56,6 +56,12 @@ namespace ConvertThis.WebApi
 
             app.UseHttpsRedirection();
             app.UseRouting();
+            app.UseCors(policy =>
+                policy.WithOrigins("http://localhost:44332", "https://localhost:44332")
+                .AllowAnyMethod()
+                .AllowAnyHeader());
+
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();

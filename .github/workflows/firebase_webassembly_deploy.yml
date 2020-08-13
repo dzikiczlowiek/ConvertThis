@@ -1,0 +1,74 @@
+name: Firebase WebAssembly Deploy
+
+on:
+  pull_request:
+    branches: [ main ]
+    paths: 
+      - 'source/UI/ConvertThis.WebAssembly/**'
+      - '.github/workflows/firebase_webassembly_deploy.yml'
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Declare some vars to use on other actions
+      id: vars
+      shell: bash
+      run: |
+        echo "GITHUB_SHA: ${GITHUB_SHA}"
+        echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
+        echo "::set-output name=sha::${GITHUB_SHA}"
+    - name: Write Version to File
+      shell: bash
+      run: | 
+        echo ${{ steps.vars.outputs.sha }} > source/UI/ConvertThis.WebAssembly/meta/_gitinfo.txt      
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 3.1.301
+    - name: Install dependencies
+      run: dotnet restore  source/UI/ConvertThis.WebAssembly/ConvertThis.WebAssembly.csproj
+    - name: Build
+      run: dotnet build source/UI/ConvertThis.WebAssembly/ConvertThis.WebAssembly.csproj --configuration Release --no-restore
+    # - name: Test
+    #   run: dotnet test --no-restore --verbosity normal
+    - name: dotnet publish
+      run: dotnet publish source/UI/ConvertThis.WebAssembly/ConvertThis.WebAssembly.csproj -c Release -o ${{env.DOTNET_ROOT}}/webassembly --no-build
+    - name: list files
+      shell: bash
+      run: | 
+        ls -a ${{env.DOTNET_ROOT}}/webassembly
+    - name: Archive Production Artifact
+      uses: actions/upload-artifact@master
+      with:
+        name: webassembly
+        path: ${{env.DOTNET_ROOT}}/webassembly/
+  deploy:
+    name: Deploy
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Download Artifact
+      uses: actions/download-artifact@master
+      with:
+        name: webassembly
+        path: webassembly
+    - name: Create Firebase.json
+      shell: bash
+      run: | 
+        echo ${{ secrets.FIREBASE_JSON }} > firebase.json
+    - name: Create .firebaserc
+      shell: bash
+      run: | 
+        echo ${{ secrets._firebaserc }} > .firebaserc
+    - name: list files
+      shell: bash
+      run: | 
+        ls -a
+    - name: Deploy to Firebase
+      uses: w9jds/firebase-action@v1.5.0
+      with:
+          args: deploy --only hosting
+      env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}

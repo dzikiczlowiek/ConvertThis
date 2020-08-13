@@ -1,0 +1,46 @@
+name: Azure WebApi Deploy
+
+on:
+  pull_request:
+    branches: [ main ]
+    paths: 
+    - 'source/WebApi/**'
+    - '.github/workflows/azure_deploy.yml'
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@main
+    - name: Declare some vars to use on other actions
+      id: vars
+      shell: bash
+      run: |
+        echo "GITHUB_SHA: ${GITHUB_SHA}"
+        echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
+        echo "::set-output name=sha::${GITHUB_SHA}"
+    - name: Write Version to File
+      shell: bash
+      run: | 
+        echo ${{ steps.vars.outputs.sha }} > source/WebApi/ConvertThis.WebApi/meta/_gitinfo.txt      
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 3.1.301
+    - name: Install dependencies
+      run: dotnet restore source/WebApi/ConvertThis.WebApi/ConvertThis.WebApi.csproj
+    - name: Build
+      run: dotnet build source/WebApi/ConvertThis.WebApi/ConvertThis.WebApi.csproj --configuration Release --no-restore
+    # - name: Test
+    #   run: dotnet test --no-restore --verbosity normal
+    - name: dotnet publish
+      run: dotnet publish source/WebApi/ConvertThis.WebApi/ConvertThis.WebApi.csproj -c Release -o ${{env.DOTNET_ROOT}}/webapi
+      
+    - name: Deploy to Azure Web App
+      uses: azure/webapps-deploy@v1
+      with:
+        app-name: 'convertthis-webapi'
+        slot-name: 'production'
+        publish-profile: ${{ secrets.AZURE_PUBLISH_PROFILE }}
+        package: ${{env.DOTNET_ROOT}}/webapi 

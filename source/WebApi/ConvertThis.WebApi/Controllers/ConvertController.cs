@@ -1,6 +1,10 @@
-﻿using ConvertThis.Infrastructure;
+﻿using System;
+using System.IO;
+
+using ConvertThis.Infrastructure;
 using ConvertThis.WebApi.Models;
 
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ConvertThis.WebApi.Controllers
@@ -8,6 +12,7 @@ namespace ConvertThis.WebApi.Controllers
     [ResponseCache(VaryByHeader = "User-Agent", Duration = 30)]
     [Route("api/[controller]")]
     [ApiController]
+    [EnableCors]
     public class ConvertController : ControllerBase
     {
         private readonly IInputToByteArrayConverter _toByteArrayConverter;
@@ -40,8 +45,10 @@ namespace ConvertThis.WebApi.Controllers
             }
         }
 
+
+
         [HttpPost("to")]
-        public IActionResult ConvertTo2([FromBody]ConvertInputRequestModel request)
+        public IActionResult ConvertTo2([FromBody] ConvertInputRequestModel request)
         {
             var converter = _converterFactory.Create(request.ConverterType);
             if (converter == null)
@@ -59,6 +66,16 @@ namespace ConvertThis.WebApi.Controllers
             {
                 _converterFactory.Release(converter);
             }
+        }
+
+        [HttpGet("Info")]
+        public IActionResult Info()
+        {
+            using Stream stream = this.GetType().Assembly.
+                GetManifestResourceStream("ConvertThis.WebApi.meta._gitinfo.txt");
+            using StreamReader sr = new StreamReader(stream);
+
+            return Ok(sr.ReadToEnd());
         }
     }
 }
