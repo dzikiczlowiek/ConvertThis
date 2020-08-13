@@ -6,7 +6,6 @@ on:
     paths: 
     - 'source/WebApi/**'
     - '.github/workflows/azure_deploy.yml'
-
 jobs:
   build:
 

@@ -6,7 +6,6 @@ on:
     paths: 
       - 'source/UI/ConvertThis.WebAssembly/**'
       - '.github/workflows/firebase_webassembly_deploy.yml'
-
 jobs:
   build:
     runs-on: ubuntu-latest
