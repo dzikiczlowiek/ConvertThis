@@ -8,7 +8,7 @@ on:
     - '.github/workflows/heroku_deploy.yml'
 
 jobs:
-  build_icolors:
+  build:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@main
@@ -17,6 +17,6 @@ jobs:
         HEROKU_API_KEY: ${{ secrets.HEROKU_APIKEY }}
         APP_NAME: ${{ 'convertthis' }}
       run: |
-        docker login --username=_ --password=$HEROKU_APIKEY registry.heroku.com
+        docker login --username=_ --password=$HEROKU_API_KEY registry.heroku.com
         heroku container:push web -a $APP_NAME
         heroku container:release web -a $APP_NAME
