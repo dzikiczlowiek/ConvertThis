@@ -7,10 +7,11 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1-buster AS build
 WORKDIR /src
-COPY ["ConvertThis.WebApi/ConvertThis.WebApi.csproj", "ConvertThis.WebApi/"]
-RUN dotnet restore "ConvertThis.WebApi/ConvertThis.WebApi.csproj"
+COPY ["source/WebApi", "WebApi/"]
+RUN dotnet restore "WebApi/ConvertThis.WebApi/ConvertThis.WebApi.csproj"
+
 COPY . .
-WORKDIR "/src/ConvertThis.WebApi"
+WORKDIR "/src/WebApi/ConvertThis.WebApi"
 RUN dotnet build "ConvertThis.WebApi.csproj" -c Release -o /app/build
 
 FROM build AS publish
